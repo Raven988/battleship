@@ -1,0 +1,29 @@
+version: '3'
+
+services:
+  game:
+    build: ./app
+    depends_on:
+      - db
+    environment:
+      - POSTGRES_HOST=db
+      - POSTGRES_DB=game_db
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=mysecretpassword
+  db:
+    image: postgres:alpine
+    restart: always
+    environment:
+      POSTGRES_DB: game_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: mysecretpassword
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - "8888:8080"
+
+volumes:
+  pgdata:
